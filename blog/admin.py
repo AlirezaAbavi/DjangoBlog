@@ -1,5 +1,11 @@
 from django.contrib import admin
-from .models import Article, Category, IPAddress
+from .models import (
+    Article,
+    Category,
+    IPAddress,
+    comment,
+    Message,
+)
 
 # Admin header change
 admin.site.site_header = "Django Blog"
@@ -45,3 +51,5 @@ class ArticleAdmin(admin.ModelAdmin):
 
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(IPAddress)
+admin.site.register(comment)
+admin.site.register(Message)
