@@ -1,11 +1,14 @@
 from django.db import models
 from django.urls import reverse
-from account.models import User
-from django.utils.html import format_html
 from django.utils import timezone
+from django.utils.html import format_html
+
+from account.models import User
 
 
 # my managers
+
+
 class ArticleManager(models.Manager):
     def published(self):
         return self.filter(status='p')
@@ -49,6 +52,7 @@ class Article(models.Model):
     )
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='articles')
     title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=200, default='', blank=True)
     slug = models.SlugField(max_length=100, unique=True)
     category = models.ManyToManyField(Category, related_name="articles")
     description = models.TextField()
@@ -75,14 +79,33 @@ class Article(models.Model):
     thumbnail_tag.short_description = "thumbnail"
 
     def category_to_str(self):
-        return "، ".join([category.title for category in self.category.active()])
+        return ", ".join([category.title for category in self.category.active()])
 
     category_to_str.short_description = "Category"
 
     objects = ArticleManager()
 
 
+class comment(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.body[:50]
+
+
 class ArticleHit(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     ip_address = models.ForeignKey(IPAddress, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
+
+
+class Message(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True, editable=False)
+    email = models.EmailField(null=True, blank=True, editable=False)
+    subject = models.CharField(max_length=100, null=True, blank=True, editable=False)
+    message = models.TextField(null=True, blank=True, editable=False)
+
