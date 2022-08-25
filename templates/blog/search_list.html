@@ -1,0 +1,8 @@
+{% extends 'blog/list.html' %}
+
+{% block banner-h3 %}search result{% endblock %}
+{% block banner-h1 %}{{ paginator.count }} articles{% endblock %}
+
+{% block search-phrase1 %}q={{ request.GET.q }}{% endblock %}
+{% block search-phrase2 %}q={{ request.GET.q }}{% endblock %}
+{% block search-phrase3 %}q={{ request.GET.q }}{% endblock %}

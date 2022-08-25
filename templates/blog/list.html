@@ -1,0 +1,105 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block content %}
+
+    <div class="heading-page header-text">
+        <section class="page-heading">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-content">
+                            <h4>{% block banner-h4 %}{% endblock %}</h4>
+                            <h3>{% block banner-h3 %}{% endblock %}</h3>
+                            <h2>{% block banner-h2 %}{% endblock %}</h2>
+                            <h1>{% block banner-h1 %}{% endblock %}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section class="blog-posts grid-system">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="all-blog-posts">
+                        <div class="row">
+                            {% for article in object_list %}
+                                <div class="col-lg-6">
+                                    <div class="blog-post">
+                                        <div class="blog-thumb">
+                                            <img src="{{ article.thumbnail.url }}" alt="">
+                                        </div>
+                                        <div class="down-content">
+                                            <a href="{% url 'blog:detail' article.slug %}"><span>{{ article.title }}</span></a>
+                                            <a href="{% url 'blog:detail' article.slug %}">
+                                                <h4>{{ article.subtitle }}</h4></a>
+                                            <ul class="post-info">
+                                                <li>
+                                                    <a href="{% url 'blog:author' article.author.username %}">{{ article.author.get_full_name }}</a>
+                                                </li>
+                                                <li><a href="#">{{ article.publish|date }}</a></li>
+                                                <li><a href="#">12 Comments</a></li>
+                                            </ul>
+                                            <p>{{ article.description|striptags|truncatewords:20 }}
+                                                <a href="{% url 'blog:detail' article.slug %}">more</a>
+                                            </p>
+                                            <div class="post-options">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <ul class="post-tags">
+                                                            {% for cat in article.category.all %}
+                                                                <li>
+                                                                    <a href="{% url 'blog:category' cat.slug %}">{{ cat.title }}</a>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% if is_paginated %}
+                                <div class="col-lg-12">
+                                    <ul class="page-numbers">
+                                        {% if page_obj.has_previous %}
+                                            <li><a href="?
+
+
+                                                    {% block search-phrase1 %}{% endblock %}&page={{ page_obj.previous_page_number }}"><i
+                                                    class="fa fa-angle-double-left"></i></a></li>
+                                        {% endif %}
+                                        {% for i in paginator.page_range %}
+                                            {% if page_obj.number == i %}
+                                                <li class="active"><a href="#">{{ i }}</a></li>
+                                            {% else %}
+                                                <li><a href="?
+
+
+                                                        {% block search-phrase2 %}{% endblock %}&page={{ i }}">{{ i }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if page_obj.has_next %}
+                                            <li><a href="?
+
+
+                                                    {% block search-phrase3 %}{% endblock %}&page={{ page_obj.next_page_number }}"><i
+                                                    class="fa fa-angle-double-right"></i></a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% render_partial 'blog:sidebar_partial' %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

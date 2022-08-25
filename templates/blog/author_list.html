@@ -1,0 +1,4 @@
+{% extends 'blog/list.html' %}
+
+{% block banner-h3 %}author{% endblock %}
+{% block banner-h1 %}{{ author.get_full_name }}{% endblock %}
