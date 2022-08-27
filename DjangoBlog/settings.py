@@ -42,9 +42,12 @@ INSTALLED_APPS = [
     'django_render_partial',
     'django_cleanup.apps.CleanupConfig',
     'django_social_share',
+    'crispy_forms',
     'blog.apps.BlogConfig',
     'account.apps.AccountConfig',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
