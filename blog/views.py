@@ -2,7 +2,8 @@ from datetime import timedelta, datetime
 from django.db.models import Q, Count
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, TemplateView
-from blog.models import Article, Category, User, comment, Message
+from blog.models import Article, Category, comment, Message
+from account.models import User
 
 
 # Create your views here.
@@ -38,7 +39,6 @@ class PopularList(ListView):
 
 class ArticleDetail(DetailView):
     def get_object(self):
-        global article
         slug = self.kwargs.get('slug')
         article = get_object_or_404(Article.objects.published(), slug=slug)
 
@@ -49,9 +49,14 @@ class ArticleDetail(DetailView):
         return article
 
     def post(self, request, slug):
+        article = get_object_or_404(Article.objects.published(), slug=slug)
         parent_id = request.POST.get('parent_id')
         body = request.POST.get('body')
-        comment.objects.create(article=article, body=body, user=request.user, parent_id=int(parent_id))
+        if parent_id == '':
+            comment.objects.create(article=article, body=body, user=request.user)
+        else:
+            comment.objects.create(article=article, body=body, user=request.user, parent_id=int(parent_id))
+
         return redirect(self.request.path_info + '#comments')
 
 
