@@ -1,0 +1,68 @@
+{% extends 'registration/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% block title-meta %}
+
+{% endblock %}{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title mb-0 float-left">New Article</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="row">
+                        <div class="col-4">
+                            {{ form.title|as_crispy_field }}
+                        </div>
+                        <div class="col-4">
+                            {{ form.subtitle|as_crispy_field }}
+                        </div>
+                        <div class="col-4">
+                            {{ form.slug|as_crispy_field }}
+                        </div>
+                        <div class="col-12">
+                            {{ form.description|as_crispy_field }}
+                        </div>
+                        <div class="col-6">
+                            {{ form.category|as_crispy_field }}
+                        </div>
+                        <div class="col-6">
+                            {{ form.thumbnail|as_crispy_field }}
+                        </div>
+                        <div class="col-6">
+                            {{ form.publish|as_crispy_field }}
+                        </div>
+                        {% if user.is_superuser or user.is_staff %}
+                            <div class="col-6">
+                                {{ form.author|as_crispy_field }}
+                            </div>
+                            <div class="col-6">
+                                {{ form.status|as_crispy_field }}
+                            </div>
+                        {% else %}
+                            <div class="col-6">
+                                <div id="div_id_status" class="form-group">
+                                    <label for="id_status" class=" requiredField">
+                                        Status<span class="asteriskField">*</span>
+                                    </label>
+                                    <div class="">
+                                        <select name="status" class="select form-control" required="" id="id_status">
+                                            <option value="d">Draft</option>
+                                            <option value="r">Send for review</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="col-6">
+                            {{ form.is_special|as_crispy_field }}
+                        </div>
+                    </div>
+                    <button class="btn btn-success">Save</button>
+                </form>
+            </div>
+        </div>
+{% endblock %}

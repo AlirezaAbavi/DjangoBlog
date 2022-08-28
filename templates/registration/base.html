@@ -23,7 +23,7 @@
     <!-- JQVMap -->
     <link rel="stylesheet" href="{% static 'registration/adminlte/plugins/jqvmap/jqvmap.min.css' %}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="../../static/registration/adminlte/assets/css/adminlte.min.css">
+    <link rel="stylesheet" href="{% static 'registration/adminlte/assets/css/adminlte.min.css' %}">
     <!-- overlayScrollbars -->
     <link rel="stylesheet"
           href="{% static 'registration/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
@@ -37,7 +37,7 @@
 
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__shake" src="../../static/registration/adminlte/assets/img/AdminLTELogo.png"
+        <img class="animation__shake" src="{% static 'registration/adminlte/assets/img/AdminLTELogo.png' %}"
              alt="AdminLTELogo" height="60" width="60">
     </div>
 
@@ -121,6 +121,6 @@
 <!-- overlayScrollbars -->
 <script src="{% static 'registration/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
 <!-- AdminLTE App -->
-<script src="../../static/registration/adminlte/assets/js/adminlte.js"></script>
+<script src="{% static 'registration/adminlte/assets/js/adminlte.js'%}"></script>
 </body>
 </html>
