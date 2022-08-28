@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'django_social_share',
     'crispy_forms',
+    'widget_tweaks',
     'blog.apps.BlogConfig',
     'account.apps.AccountConfig',
 ]
