@@ -13,19 +13,21 @@
 
                 <div class="card-body">
                     <table class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th style="text-align: center">Title</th>
-                            <th style="text-align: center">Thumbnail</th>
-                            <th style="text-align: center">Category</th>
-                            <th style="text-align: center">Author</th>
-                            <th style="text-align: center">Hits</th>
-                            <th style="text-align: center">Comments</th>
-                            <th style="text-align: center">Special status</th>
-                            <th style="text-align: center">Created</th>
-                            <th style="text-align: center">Status</th>
-                        </tr>
-                        </thead>
+                        {% if Articles.count != 0 %}
+                            <thead>
+                            <tr>
+                                <th style="text-align: center">Title</th>
+                                <th style="text-align: center">Thumbnail</th>
+                                <th style="text-align: center">Category</th>
+                                <th style="text-align: center">Author</th>
+                                <th style="text-align: center">Hits</th>
+                                <th style="text-align: center">Comments</th>
+                                <th style="text-align: center">Special status</th>
+                                <th style="text-align: center">Created</th>
+                                <th style="text-align: center">Status</th>
+                            </tr>
+                            </thead>
+                        {% endif %}
                         <tbody>
                         {% for article in Articles %}
                             <tr data-widget="expandable-table" aria-expanded="false">
@@ -53,7 +55,7 @@
                                         <span class="badge badge-success">PUBLISHED</span>
                                         <hr>
                                         <a target="_blank" class="badge badge-primary"
-                                           href="{% url 'blog:detail' article.slug %}">VIEW ON SITE</a>
+                                           href="{% url 'blog:detail' article.slug %}">VIEW ON SITE</a><br>
                                     {% elif article.status == 'd' %}
                                         <span class="badge badge-secondary">DRAFT</span>
                                         <hr>
@@ -64,8 +66,11 @@
                                         <span class="badge badge-danger">DENIED</span>
                                         <hr>
                                     {% endif %}
-                                    <a target="_blank" class="badge badge-info"
+                                    <a class="badge badge-info"
                                        href="{% url 'account:article-update' article.pk %}">EDIT</a>
+                                    <br>
+                                    <a class="badge badge-dark"
+                                       href="{% url 'account:article-delete' article.pk %}">DELETE</a>
                                 </td>
                             </tr>
                             <tr class="expandable-body d-none">
@@ -76,6 +81,18 @@
                                 </td>
                             </tr>
                         {% endfor %}
+                        {% if Articles.count == 0 %}
+                            <tr class="expandable-table">
+                            </tr>
+                            <tr class="expandable-body">
+                                <td colspan="9" style="text-align: center; vertical-align: middle; height: 150px">
+                                    <a href="{% url 'account:article-create' %}">
+                                        <button class="btn btn-warning">There is no article to display! Click to add one
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endif %}
                         </tbody>
                     </table>
                 </div>

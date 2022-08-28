@@ -43,3 +43,14 @@ class AuthorAccessMixin():
             return super().dispatch(request, *args, **kwargs)
         else:
             raise Http404("YOU ARE NOT AUTHORIZED FOR THIS ACTION")
+
+
+class DeletionMixin():
+    def dispatch(self, request, pk, *args, **kwargs):
+        article = get_object_or_404(Article, pk=pk)
+        if request.user.is_superuser or request.user.is_staff:
+            return super().dispatch(request, *args, **kwargs)
+        elif request.user == article.author and article.status in ['d', 'r', 'b']:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            raise Http404("YOU ARE NOT AUTHORIZED FOR THIS ACTION")
