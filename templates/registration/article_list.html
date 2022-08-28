@@ -63,13 +63,17 @@
                                         <span class="badge badge-warning">PENDING</span>
                                         <hr>
                                     {% elif article.status == 'b' %}
-                                        <span class="badge badge-danger">DENIED</span>
+                                        <span class="badge badge-dark">DENIED</span>
                                         <hr>
+                                    {% endif %}
+                                    {% if article.status != 'p' %}
+                                        <a target="_blank" class="badge badge-primary"
+                                           href="{% url 'blog:preview' article.pk %}">Preview</a><br>
                                     {% endif %}
                                     <a class="badge badge-info"
                                        href="{% url 'account:article-update' article.pk %}">EDIT</a>
                                     <br>
-                                    <a class="badge badge-dark"
+                                    <a class="badge badge-danger"
                                        href="{% url 'account:article-delete' article.pk %}">DELETE</a>
                                 </td>
                             </tr>

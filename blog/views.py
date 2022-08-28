@@ -1,9 +1,12 @@
 from datetime import timedelta, datetime
+
 from django.db.models import Q, Count
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, TemplateView
-from blog.models import Article, Category, comment, Message
+
+from account.mixins import PreviewMixin
 from account.models import User
+from blog.models import Article, Category, comment, Message
 
 
 # Create your views here.
@@ -58,6 +61,12 @@ class ArticleDetail(DetailView):
             comment.objects.create(article=article, body=body, user=request.user, parent_id=int(parent_id))
 
         return redirect(self.request.path_info + '#comments')
+
+
+class ArticlePreview(PreviewMixin, DetailView):
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        return get_object_or_404(Article, pk=pk)
 
 
 class CategoryList(ListView):
