@@ -7,7 +7,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, verbose_name='Email')
 
     is_author = models.BooleanField(default=False, verbose_name="Author status")
-    special_user = models.DateTimeField(default=timezone.now, verbose_name="Special user until")
+    special_user = models.DateTimeField(default=timezone.now, verbose_name="Subscription expires in")
 
     def is_special_user(self):
         if self.special_user > timezone.now():

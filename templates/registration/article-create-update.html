@@ -48,8 +48,9 @@
                                     <label for="id_status" class=" requiredField">
                                         Status<span class="asteriskField">*</span>
                                     </label>
-                                    <div class="">
+                                    <div>
                                         <select name="status" class="select form-control" required="" id="id_status">
+                                            <option value="">---------</option>
                                             <option value="d">Draft</option>
                                             <option value="r">Send for review</option>
                                         </select>
@@ -65,4 +66,5 @@
                 </form>
             </div>
         </div>
+    </div>
 {% endblock %}

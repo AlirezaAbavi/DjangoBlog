@@ -46,7 +46,7 @@
                                     {% if article.is_special %}
                                         <i class="fa fa-check-circle" style="color: #70bf2b"></i>
                                     {% else %}
-                                        <i class="fa fa-close" style="color: red"></i>
+                                        <i class="fa fa-minus-circle" style="color: red"></i>
                                     {% endif %}
                                 </td>
                                 <td style="text-align: center; vertical-align: middle;">{{ article.created }}</td>
@@ -70,9 +70,15 @@
                                         <a target="_blank" class="badge badge-primary"
                                            href="{% url 'blog:preview' article.pk %}">Preview</a><br>
                                     {% endif %}
-                                    <a class="badge badge-info"
-                                       href="{% url 'account:article-update' article.pk %}">EDIT</a>
-                                    <br>
+                                    {% if article.status != 'r' or user.is_superuser %}
+                                        <a class="badge badge-info"
+                                           href="{% url 'account:article-update' article.pk %}">EDIT</a>
+                                        <br>
+                                    {% elif not article.author.is_staff and article.author != user %}
+                                        <a class="badge badge-info"
+                                           href="{% url 'account:article-update' article.pk %}">EDIT</a>
+                                        <br>
+                                    {% endif %}
                                     <a class="badge badge-danger"
                                        href="{% url 'account:article-delete' article.pk %}">DELETE</a>
                                 </td>

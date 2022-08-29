@@ -59,7 +59,7 @@ class Article(models.Model):
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    is_special = models.BooleanField(default=False)
+    is_special = models.BooleanField(default=False, verbose_name='Special status')
     status = models.CharField(max_length=1, choices=STATUS_CHOICES)
     hits = models.ManyToManyField(IPAddress, through="ArticleHit", blank=True, related_name="hits")
 

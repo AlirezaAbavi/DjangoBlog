@@ -2,7 +2,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="{% url 'blog:home' %}" class="brand-link">
         <img src="{% static 'registration/adminlte/assets/img/AdminLTELogo.png" alt="AdminLTE Logo' %}"
              class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Django Blog</span>
@@ -17,22 +17,22 @@
                      class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ request.user.get_full_name }}</a>
+                <a href="{% url 'account:profile' %}" class="d-block">{{ request.user.get_full_name }}</a>
             </div>
         </div>
 
         <!-- SidebarSearch Form -->
-        <div class="form-inline">
-            <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Search"
-                       aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-sidebar">
-                        <i class="fas fa-search fa-fw"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+        {#        <div class="form-inline">#}
+        {#            <div class="input-group" data-widget="sidebar-search">#}
+        {#                <input class="form-control form-control-sidebar" type="search" placeholder="Search"#}
+        {#                       aria-label="Search">#}
+        {#                <div class="input-group-append">#}
+        {#                    <button class="btn btn-sidebar">#}
+        {#                        <i class="fas fa-search fa-fw"></i>#}
+        {#                    </button>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -40,37 +40,56 @@
                 data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
+                {% if user.is_superuser or user.is_staff or user.is_author %}
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                            <i class="nav-icon fas fa-blog"></i>
+                            <p>
+                                Blog
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{% url 'account:home' %}" class="nav-link">
+                                    <i class="nav-icon fa fa-list"></i>
+                                    <p>Articles List</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'account:article-create' %}" class="nav-link">
+                                    <i class="nav-icon fa fa-edit nav-icon"></i>
+                                    <p>New Article</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
                     <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-blog"></i>
+                        <i class="nav-icon fas fa-user"></i>
                         <p>
-                            Blog
+                            Account
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'account:home' %}" class="nav-link">
-                                <i class="nav-icon fa fa-list"></i>
-                                <p>Articles List</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'account:article-create' %}" class="nav-link">
+                            <a href="{% url 'account:profile' %}" class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
                                 <i class="nav-icon fa fa-edit nav-icon"></i>
-                                <p>New Article</p>
+                                <p>Edit Profile</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="iframe.html" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>Profile
-                            <span class="right badge badge-danger">New</span>
-                        </p>
-                    </a>
-                </li>
+                {#                <li class="nav-item">#}
+                {#                    <a href="iframe.html" class="nav-link">#}
+                {#                        <i class="nav-icon fas fa-th"></i>#}
+                {#                        <p>Profile#}
+                {#                            <span class="right badge badge-danger">New</span>#}
+                {#                        </p>#}
+                {#                    </a>#}
+                {#                </li>#}
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

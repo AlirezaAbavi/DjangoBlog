@@ -6,20 +6,13 @@ from blog.models import Article
 
 class FieldsMixin():
     def dispatch(self, request, *args, **kwargs):
+        self.fields = [
+            "title", "subtitle", "slug", "category",
+            "description", "thumbnail", "publish",
+            "is_special", "status"
+        ]
         if request.user.is_superuser or request.user.is_staff:
-            self.fields = [
-                "title", "subtitle", "slug", "category",
-                "description", "thumbnail", "publish",
-                "is_special", "status", "author"
-            ]
-        elif request.user.is_author:
-            self.fields = [
-                "title", "slug", "category",
-                "description", "thumbnail", "publish",
-                "is_special"
-            ]
-        else:
-            raise Http404("YOU ARE NOT AUTHORIZED FOR THIS SECTION")
+            self.fields.append("author")
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -30,7 +23,8 @@ class FormValidMixin():
         else:
             self.obj = form.save(commit=False)
             self.obj.author = self.request.user
-            self.obj.status = 'r'
+            if not self.obj.status == 'r':
+                self.obj.status = 'd'
         return super().form_valid(form)
 
 
@@ -39,7 +33,8 @@ class AuthorAccessMixin():
         article = get_object_or_404(Article, pk=pk)
         if article.author == request.user \
                 or request.user.is_superuser \
-                or request.user.is_staff:
+                or request.user.is_staff \
+                or article.status in ['d', 'b', 'p']:
             return super().dispatch(request, *args, **kwargs)
         else:
             raise Http404("YOU ARE NOT AUTHORIZED FOR THIS ACTION")
@@ -68,3 +63,13 @@ class PreviewMixin():
             return super().dispatch(request, *args, **kwargs)
         else:
             raise Http404("YOU ARE NOT AUTHORIZED FOR THIS ACTION")
+
+
+class AuthorizedAccessMixin():
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_author \
+                or request.user.is_superuser \
+                or request.user.is_staff:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return redirect('account:profile')
