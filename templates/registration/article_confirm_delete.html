@@ -6,14 +6,14 @@
 {% endblock %}{% endblock %}
 
 {% block content %}
-    <div class="col-md-7">
+    <div class="col-md-8 text-center mx-auto">
         <div class="card card-danger">
             <div class="card-header">
                 <h3 class="card-title mb-0 float-left">Delete Article</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body py-4">
                 <form method="post">{% csrf_token %}
-                    <p>Do you really want to delete this article? This process cannot be undone.</p>
+                    <p class="py-2">Do you really want to delete this article? This process cannot be undone.</p>
                     <a href="{% url 'account:home' %}"><button type="button" class="btn btn-light">Cancel</button></a>
                     <input type="submit" class="btn btn-danger" value="Delete">
                 </form>

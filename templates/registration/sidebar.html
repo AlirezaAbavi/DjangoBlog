@@ -41,7 +41,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 {% if user.is_superuser or user.is_staff or user.is_author %}
-                    <li class="nav-item">
+                    <li class="nav-item menu-open">
                         <a href="#" class="nav-link active">
                             <i class="nav-icon fas fa-blog"></i>
                             <p>
@@ -65,7 +65,7 @@
                         </ul>
                     </li>
                 {% endif %}
-                <li class="nav-item">
+                <li class="nav-item {% if not user.is_superuser or not user.is_staff or not user.is_author %}menu-open{% endif %}">
                     <a href="#" class="nav-link active">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
@@ -75,9 +75,17 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'account:profile' %}" class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+                            <a href="{% url 'account:profile' %}"
+                               class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
                                 <i class="nav-icon fa fa-edit nav-icon"></i>
                                 <p>Edit Profile</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'account:password_change' %}"
+                               class="nav-link {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}">
+                                <i class="nav-icon fa fa-user-lock nav-icon"></i>
+                                <p>Change Password</p>
                             </a>
                         </li>
                     </ul>
