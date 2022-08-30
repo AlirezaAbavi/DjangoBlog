@@ -65,7 +65,7 @@
                         </ul>
                     </li>
                 {% endif %}
-                <li class="nav-item {% if not user.is_superuser or not user.is_staff or not user.is_author %}menu-open{% endif %}">
+                <li class="nav-item {% if not user.is_superuser and not user.is_staff and not user.is_author %}menu-open{% endif %}">
                     <a href="#" class="nav-link active">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
@@ -82,7 +82,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'account:password_change' %}"
+                            <a href="{% url 'password_change' %}"
                                class="nav-link {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}">
                                 <i class="nav-icon fa fa-user-lock nav-icon"></i>
                                 <p>Change Password</p>

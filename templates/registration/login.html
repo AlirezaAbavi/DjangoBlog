@@ -1,26 +1,16 @@
-{% load static %}
+{% extends 'registration/login-base.html' %}
 {% load widget_tweaks %}
-<!doctype html>
-<html lang="en">
-<head>
-    <title>Django Blog - Login</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+{% block title %}
+    Login | Django BLog
+{% endblock %}
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <link rel="stylesheet" href="{% static 'registration/login/css/style.css' %}">
-
-	</head>
-	<body class=" img js-fullheight
-    " style="background-image: url(../../static/registration/login/images/bg.jpg);">
+{% block content %}
     <section class="ftco-section">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-6 text-center mb-5">
-                    <h2 class="heading-section">Django Blog</h2>
+                    <a href="{% url 'blog:home' %}"><h2 class="heading-section">Django Blog</h2></a>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -29,16 +19,17 @@
                         <h3 class="mb-4 text-center">Have an account?</h3>
                         {% if form.non_field_errors %}
                             {% for error in form.non_field_errors %}
-                                <p class="btn btn-outline-warning">{{ error }}</p>
+                                <p class="text-center"
+                                   style="background-color: darkorange; border-radius: 25px">{{ error }}</p>
                             {% endfor %}
-                        {% endif %} 
+                        {% endif %}
                         <form action="#" method="post" class="signin-form">
                             {% csrf_token %}
                             <div class="form-group">
-                                {{ form.username|add_class:"form-control"|attr:"placeholder:Username" }}
+                                {% render_field form.username class+="form-control" placeholder="Username" type="text" %}
                             </div>
                             <div class="form-group">
-                                {{ form.password|add_class:"form-control"|attr:"placeholder:Password" }}
+                                {% render_field form.password class+="form-control" placeholder="Password" id="password-field" type="password" %}
                                 <span toggle="#password-field"
                                       class="fa fa-fw fa-eye field-icon toggle-password"></span>
                             </div>
@@ -53,7 +44,7 @@
                                     </label>
                                 </div>
                                 <div class="w-50 text-md-right">
-                                    <a href="#" style="color: #fff">Forgot Password</a>
+                                    <a href="{% url 'password_reset' %}" style="color: #fff">Forgot Password</a>
                                 </div>
                             </div>
                         </form>
@@ -69,12 +60,5 @@
             </div>
         </div>
     </section>
-
-    <script src="{% static 'registration/login/js/jquery.min.js' %}"></script>
-    <script src="{% static 'registration/login/js/popper.js' %}"></script>
-    <script src="{% static 'registration/login/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'registration/login/js/main.js' %}"></script>
-
-    </body>
-</html>
+{% endblock %}
 
