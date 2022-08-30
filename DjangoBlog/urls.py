@@ -22,9 +22,9 @@ from . import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', Login.as_view(), name='login'),
     path('', include('django.contrib.auth.urls')),
     path('', include('blog.urls')),
-    path('login/', Login.as_view(), name='login'),
     path('accounts/', include('account.urls')),
 ]
 
