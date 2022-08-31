@@ -1,0 +1,41 @@
+{% extends 'registration/auth-base.html' %}
+{% block title %}
+    Confirmation | Django Blog
+{% endblock %}
+
+{% block content %}
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <a href="{% url 'blog:home' %}"><h2 class="heading-section">Django Blog</h2></a>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="{% if is_done %}col-md-6 col-lg-7{% else %}col-md-4 col-lg-4{% endif %}">
+                    <div class="login-wrap p-0">
+                        <h3 class="mb-4 text-center">{% if is_done %}Registration complete{% else %}Activation link has
+                            expired{% endif %} </h3>
+                        <p class="text-center">{% if is_done %}Thank you for your email confirmation, your account has
+                            successfully
+                            registered.
+                            <br>
+                            Now you can sign in to your account.{% else %}The Activation link has expired.
+                            <br>
+                            Please try again{% endif %}</p>
+                        {% if is_done %}
+                            <a href="{% url 'login' %}">
+                                <button type="button" class="form-control btn btn-primary submit px-3">Sign in</button>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'register' %}">
+                                <button type="button" class="form-control btn btn-primary submit px-3">Sign up</button>
+                            </a>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

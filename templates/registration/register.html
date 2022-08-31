@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 
 {% block title %}
-Enter new password | Django Blog
+    Sign Up | Django BLog
 {% endblock %}
 
 {% block content %}
@@ -16,24 +16,32 @@ Enter new password | Django Blog
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-4">
                     <div class="login-wrap p-0">
-                        <h3 class="mb-4 text-center">Enter new password</h3>
+                        <h3 class="mb-4 text-center">Register</h3>
+                        <h6 class="mb-4 text-center">Have an account? <a href="{% url 'login' %}">Signin</a></h6>
                         <form action="#" method="post" class="signin-form">
                             {% csrf_token %}
-                            <input class="hidden" hidden autocomplete="username" value="{{ form.user.get_username }}">
                             <div class="form-group">
-                                {% render_field form.new_password1 class+="form-control" placeholder="New Password" id="password-field1" type="password"%}
+                                {% render_field form.username class+="form-control" placeholder="Username" type="text" %}
+                            </div>
+                            <p>{{ form.username.errors }}</p>
+                            <div class="form-group">
+                                {% render_field form.email class+="form-control" placeholder="Email" type="email" %}
+                            </div>
+                            <p>{{ form.email.errors }}</p>
+                            <div class="form-group">
+                                {% render_field form.password1 class+="form-control" placeholder="Password" id="password-field1" type="password" %}
                                 <span toggle="#password-field1"
                                       class="fa fa-fw fa-eye field-icon toggle-password"></span>
                             </div>
-                                <p>{{ form.new_password1.errors }}</p>
+                            <p>{{ form.password1.errors }}</p>
                             <div class="form-group">
-                                {% render_field form.new_password2 class+="form-control" placeholder="Confirm Password" id="password-field2" type="password"%}
+                                {% render_field form.password2 class+="form-control" placeholder="Confirm password" id="password-field2" type="password" %}
                                 <span toggle="#password-field2"
                                       class="fa fa-fw fa-eye field-icon toggle-password"></span>
                             </div>
-                                <p>{% render_field form.new_password2.errors %}</p>
+                            <p>{{ form.password2.errors }}</p>
                             <div class="form-group">
-                                <button type="submit" class="form-control btn btn-primary submit px-3">Change my password</button>
+                                <button type="submit" class="form-control btn btn-primary submit px-3">Sign up</button>
                             </div>
                         </form>
                     </div>
@@ -42,6 +50,4 @@ Enter new password | Django Blog
         </div>
     </section>
 {% endblock %}
-
-
 

@@ -1,4 +1,4 @@
-{% extends 'registration/login-base.html' %}
+{% extends 'registration/auth-base.html' %}
 {% load widget_tweaks %}
 
 {% block title %}
@@ -16,7 +16,9 @@
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-4">
                     <div class="login-wrap p-0">
-                        <h3 class="mb-4 text-center">Have an account?</h3>
+                        <h3 class="mb-4 text-center">Welcome Back</h3>
+                        <h6 class="mb-4 text-center">Don't have an account? <a href="{% url 'register' %}">Signup</a>
+                        </h6>
                         {% if form.non_field_errors %}
                             {% for error in form.non_field_errors %}
                                 <p class="text-center"
