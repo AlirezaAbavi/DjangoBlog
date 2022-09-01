@@ -61,6 +61,9 @@ class Login(LoginView):
     def get_success_url(self):
         user = self.request.user
 
+        if not self.request.POST.get('remember-me'):
+            self.request.session.set_expiry(0)
+
         if user.is_superuser or user.is_staff or user.is_author:
             return reverse_lazy("account:home")
         else:
