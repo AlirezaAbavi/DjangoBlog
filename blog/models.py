@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import format_html
+
 from account.models import User
 
 
@@ -9,6 +10,11 @@ from account.models import User
 
 
 class ArticleManager(models.Manager):
+    def published(self):
+        return self.filter(status='p')
+
+
+class CommentManager(models.Manager):
     def published(self):
         return self.filter(status='p')
 
@@ -85,15 +91,27 @@ class Article(models.Model):
     objects = ArticleManager()
 
 
-class comment(models.Model):
+class Comment(models.Model):
+    STATUS_CHOICES = (
+        ('p', "Publish"),  # publish
+        ('r', "Reviewing"),  # investigation
+        ('b', "Denied(Delete comment)"),  # back
+    )
+
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='r')
+
+    class Meta:
+        ordering = ['-article']
 
     def __str__(self):
         return self.body[:50]
+
+    objects = CommentManager()
 
 
 class ArticleHit(models.Model):
@@ -107,4 +125,3 @@ class Message(models.Model):
     email = models.EmailField(null=True, blank=True, editable=False)
     subject = models.CharField(max_length=100, null=True, blank=True, editable=False)
     message = models.TextField(null=True, blank=True, editable=False)
-

@@ -1,0 +1,119 @@
+{% extends 'registration/base.html' %}
+
+{% block title %}
+    Comments
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+
+                <div class="card-body p-0">
+                    <table class="table table-hover">
+                        {% if Comments.count != 0 %}
+                            <thead>
+                            <tr>
+                                <th style="text-align: center"></th>
+                                <th style="text-align: center">Article</th>
+                                <th style="text-align: center">User</th>
+                                <th style="text-align: center">Replies</th>
+                                <th style="text-align: center">Created at</th>
+                                <th style="text-align: center">Comment</th>
+                                <th style="text-align: center">Status</th>
+                            </tr>
+                            </thead>
+                        {% endif %}
+                        <tbody>
+                        {% for comment in Comments %}
+                            {% if comment.parent == None %}
+                                <tr
+                                        {% if comment.replies.count %}
+                                            data-widget="expandable-table" aria-expanded="false"
+                                        {% endif %}
+                                >
+                                    <td class="col-1" style="vertical-align: middle;">
+                                        {% if comment.replies.count %}
+                                            <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+
+                                        {{ comment.article.title }}
+                                    </td>
+                                    <td
+                                            style="text-align: center; vertical-align: middle;">{{ comment.user.get_full_name }}</td>
+                                    <td
+                                            style="text-align: center; vertical-align: middle;">{{ comment.replies.count }}</td>
+                                    <td
+                                            style="text-align: center; vertical-align: middle;">{{ comment.created_at }}</td>
+                                    <td
+                                            style="text-align: center; vertical-align: middle;">{{ comment.body | truncatewords:10 }}</td>
+                                    <td class="border-left col-1" style="text-align: center; vertical-align: middle;">
+                                        {% if comment.status == 'p' %}
+                                            <span class="badge badge-success">PUBLISHED</span>
+                                        {% elif comment.status == 'r' %}
+                                            <span class="badge badge-warning">PENDING</span>
+                                        {% endif %}
+                                        <a class="badge badge-info"
+                                           href="{% url 'account:comment-update' comment.pk %}">EDIT</a>
+                                    </td>
+                                </tr>
+                                {% if comment.replies.count %}
+                                    <tr class="expandable-body d-none">
+                                        <td colspan="7">
+                                            <div class="p-0" style="display: None;">
+                                                <table class="table table-hover">
+                                                    {#                                                    <thead>#}
+                                                    {#                                                    <tr>#}
+                                                    {#                                                        <th colspan="3" style="text-align: center">User</th>#}
+                                                    {#                                                        <th colspan="3" style="text-align: center">Commented at</th>#}
+                                                    {#                                                        <th colspan="3" style="text-align: center">Comment</th>#}
+                                                    {#                                                        <th colspan="3" style="text-align: center">Status</th>#}
+                                                    {#                                                    </tr>#}
+                                                    {#                                                    </thead>#}
+                                                    <tbody>
+                                                    {% for reply in comment.replies.all %}
+                                                        <tr class=" border-top border-primary">
+                                                            <td style="text-align: center; vertical-align: middle;">{{ reply.user.get_full_name }}</td>
+                                                            <td class="col-2"
+                                                                style="text-align: center; vertical-align: middle;">{{ reply.created_at }}</td>
+                                                            <td class="col-7"
+                                                                style="text-align: center; vertical-align: middle;">{{ reply.body | truncatewords:10 }}</td>
+                                                            <td class="border-left col-1"
+                                                                style="text-align: center; vertical-align: middle;">
+                                                                {% if reply.status == 'p' %}
+                                                                    <span class="badge badge-success">PUBLISHED</span>
+                                                                {% elif reply.status == 'r' %}
+                                                                    <span class="badge badge-warning">PENDING</span>
+                                                                {% endif %}
+                                                                <a class="badge badge-info"
+                                                                   href="{% url 'account:comment-update' reply.pk %}">EDIT</a>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if Comments.count == 0 %}
+                            <tr class="expandable-table">
+                            </tr>
+                            <tr class="expandable-body">
+                                <td colspan="9" style="text-align: center; vertical-align: middle; height: 150px">
+                                    <p>There is no comment to display!
+                                    </p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

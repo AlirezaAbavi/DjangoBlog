@@ -1,0 +1,35 @@
+{% extends 'registration/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% block title-meta %}
+
+{% endblock %}{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title mb-0 float-left">Your Profile</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">{% csrf_token %}
+                    <div class="row">
+                        <div class="col-4">
+                            {{ form.user|as_crispy_field }}
+                        </div>
+                        <div class="col-4">
+                            {{ form.article|as_crispy_field }}
+                        </div>
+                        <div class="col-4">
+                            {{ form.status|as_crispy_field }}
+                        </div>
+                        <div class="col-12">
+                            {{ form.body|as_crispy_field }}
+                        </div>
+                    </div>
+                    <button class="btn btn-success">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,28 +1,27 @@
 {% extends 'registration/base.html' %}
 
 {% block title %}
+    Articles
 {% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Articles</h3>
-                </div>
 
                 <div class="card-body">
                     <table class="table table-bordered table-hover">
                         {% if Articles.count != 0 %}
                             <thead>
                             <tr>
-                                <th style="text-align: center">Title</th>
+                                <th class="border-right-0" style="text-align: center"></th>
+                                <th class="border-left-0" style="text-align: center">Title</th>
                                 <th style="text-align: center">Thumbnail</th>
                                 <th style="text-align: center">Category</th>
                                 <th style="text-align: center">Author</th>
                                 <th style="text-align: center">Hits</th>
                                 <th style="text-align: center">Comments</th>
-                                <th style="text-align: center">Special status</th>
+                                <th style="text-align: center">Special</th>
                                 <th style="text-align: center">Created</th>
                                 <th style="text-align: center">Status</th>
                             </tr>
@@ -31,26 +30,30 @@
                         <tbody>
                         {% for article in Articles %}
                             <tr data-widget="expandable-table" aria-expanded="false">
-                                <td style="text-align: center; vertical-align: middle;">
+                                <td class="border-right-0" style="text-align: center; vertical-align: middle;">
                                     <button type="button" class="btn btn-primary p-0">
                                         <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
                                     </button>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
                                     {{ article.title }}</td>
                                 <td style="text-align: center; vertical-align: middle;"><img
                                         src="{{ article.thumbnail.url }}" width="100"></td>
                                 <td style="text-align: center; vertical-align: middle;">{{ article.category_to_str }}</td>
                                 <td style="text-align: center; vertical-align: middle;">{{ article.author.get_full_name }}</td>
                                 <td style="text-align: center; vertical-align: middle;">{{ article.hits.count }}</td>
-                                <td style="text-align: center; vertical-align: middle;">{{ article.comments.count }}</td>
-                                <td style="text-align: center; vertical-align: middle;">
+                                <td class="col-1"
+                                    style="text-align: center; vertical-align: middle;">{{ article.comments.count }}</td>
+                                <td class="col-1" style="text-align: center; vertical-align: middle;">
                                     {% if article.is_special %}
                                         <i class="fa fa-check-circle" style="color: #70bf2b"></i>
                                     {% else %}
                                         <i class="fa fa-minus-circle" style="color: red"></i>
                                     {% endif %}
                                 </td>
-                                <td style="text-align: center; vertical-align: middle;">{{ article.created }}</td>
-                                <td style="text-align: center; vertical-align: middle;">
+                                <td class="col-2"
+                                    style="text-align: center; vertical-align: middle;">{{ article.created }}</td>
+                                <td class="col-1" style="text-align: center; vertical-align: middle;">
                                     {% if article.status == 'p' %}
                                         <span class="badge badge-success">PUBLISHED</span>
                                         <hr>
@@ -84,7 +87,7 @@
                                 </td>
                             </tr>
                             <tr class="expandable-body d-none">
-                                <td colspan="9">
+                                <td colspan="10">
                                     <p style="display: none;">
                                         {{ article.description | truncatewords:50 | linebreaks }}
                                     </p>

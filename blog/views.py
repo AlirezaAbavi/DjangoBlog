@@ -6,7 +6,7 @@ from django.views.generic import ListView, DetailView, TemplateView
 
 from account.mixins import PreviewMixin
 from account.models import User
-from blog.models import Article, Category, comment, Message
+from blog.models import Article, Category, Comment, Message
 
 
 # Create your views here.
@@ -56,9 +56,9 @@ class ArticleDetail(DetailView):
         parent_id = request.POST.get('parent_id')
         body = request.POST.get('body')
         if parent_id == '':
-            comment.objects.create(article=article, body=body, user=request.user)
+            Comment.objects.create(article=article, body=body, user=request.user)
         else:
-            comment.objects.create(article=article, body=body, user=request.user, parent_id=int(parent_id))
+            Comment.objects.create(article=article, body=body, user=request.user, parent_id=int(parent_id))
 
         return redirect(self.request.path_info + '#comments')
 

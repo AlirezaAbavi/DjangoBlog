@@ -1,9 +1,10 @@
 from django.contrib import admin
+
 from .models import (
     Article,
     Category,
     IPAddress,
-    comment,
+    Comment,
     Message,
 )
 
@@ -51,5 +52,5 @@ class ArticleAdmin(admin.ModelAdmin):
 
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(IPAddress)
-admin.site.register(comment)
+admin.site.register(Comment)
 admin.site.register(Message)
