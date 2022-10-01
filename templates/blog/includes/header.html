@@ -8,7 +8,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item {% if request.path == '/' %}
+                    <li class="nav-item {% if request.resolver_match.url_name == 'home' %}
                         active
                     {% endif %} ">
                         <a class="nav-link" href="{% url 'blog:home' %}">Home
@@ -16,25 +16,34 @@
                         </a>
                     </li>
 
-                    <li class="nav-item {% if 'recent' in request.path %}
+                    <li class="nav-item {% if 'list' == request.resolver_match.url_name %}
                         active
                     {% endif %} ">
                         <a class="nav-link" href="{% url 'blog:list' %}">Recent</a>
                     </li>
-                    <li class="nav-item {% if 'popular' in request.path %}
+                    <li class="nav-item {% if "popular" == request.resolver_match.url_name %}
                         active
-                    {% endif %} ">
+                    {% endif %}">
                         <a class="nav-link" href="{% url 'blog:popular' %}">Popular</a>
                     </li>
-                    <li class="nav-item{% if 'about' in request.path %}
+                    <li class="nav-item{% if "about" == request.resolver_match.url_name %}
                         active
                     {% endif %} ">
                         <a class="nav-link" href="{% url 'blog:about' %}">About Us</a>
                     </li>
-                    <li class="nav-item {% if 'contact' in request.path %}
+                    <li class="nav-item {% if "contact" == request.resolver_match.url_name %}
                         active
                     {% endif %} ">
                         <a class="nav-link" href="{% url 'blog:contact' %}">Contact Us</a>
+                    </li>
+                    <li class="nav-item badge badge-warning">
+                        {% if user.is_authenticated %}
+                            <a class="nav-link" href="{% url 'account:home' %}">
+                                <i class="fa fa-user"></i> Dashboard</a>
+                        {% else %}
+                            <a class="nav-link" href="{% url 'login' %}">
+                                <i class="fa fa-sign-in-alt"></i> Login</a>
+                        {% endif %}
                     </li>
                 </ul>
             </div>

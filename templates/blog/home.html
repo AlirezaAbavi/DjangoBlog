@@ -19,13 +19,18 @@
                                         <a href="{% url 'blog:category' cat.slug %}"><span>{{ cat }} </span></a>
                                     {% endfor %}
                                 </div>
+
                                 <a href="{% url 'blog:detail' article.slug %}"><h4>{{ article.title }}</h4></a>
                                 <ul class="post-info">
                                     <li>
                                         <a href="{% url 'blog:author' article.author.username %}">{{ article.author.get_full_name }}</a>
                                     </li>
                                     <li><a href="#">{{ article.publish|date }}</a></li>
-                                    <li><a href="#">{{ article.comments.count }} comments</a></li>
+                                    <li><a href="#">{{ article.comments.published.count }} comments</a></li>
+                                    {% if article.is_special %}
+                                        <li><span class="badge badge-warning"><h7><i
+                                                class="fa fa-star"></i>Special</h7></span></li>
+                                    {% endif %}
                                 </ul>
                             </div>
                         </div>
@@ -48,17 +53,20 @@
                                             <img src="{{ article.thumbnail.url }}" alt="">
                                         </div>
                                         <div class="down-content">
-                                            <a href="{% url 'blog:detail' article.slug %}"><span>{{ article.title }}</span></a>
-                                            <a href="{% url 'blog:detail' article.slug %}">
-                                                <h4>{{ article.subtitle }}</h4></a>
+                                            {% if article.is_special %}
+                                                <h6 class="badge badge-warning" title="This is a paid article"><i
+                                                        class="fa fa-star"></i>Special</h6>
+                                            {% endif %}
+                                            <a href="{% url 'blog:detail' article.slug %}"><h4>{{ article.title }}</h4>
+                                            </a>
                                             <ul class="post-info">
                                                 <li>
                                                     <a href="{% url 'blog:author' article.author.username %}">{{ article.author.get_full_name }}</a>
                                                 </li>
                                                 <li><a href="#">{{ article.publish|date }}</a></li>
-                                                <li><a href="#">{{ article.comments.count }} comments</a></li>
+                                                <li><a href="#">{{ article.comments.published.count }} comments</a></li>
                                             </ul>
-                                            <p>{{ article.description|striptags|truncatewords:30 }}
+                                            <p>{{ article.description|striptags|truncatewords:50 }}
                                                 <a href="{% url 'blog:detail' article.slug %}">more</a>
                                             </p>
                                             <div class="post-options">
@@ -76,11 +84,11 @@
                                                     <div class="col-6">
                                                         <ul class="post-share">
                                                             <li><i class="fa fa-share-alt"></i></li>
-                                                            <li>{% post_to_telegram article.get_absloute_url "Telegram" %}</li>
+                                                            <li>{% post_to_telegram article.get_absolute_url article.title "Telegram" %}</li>
                                                             ,
-                                                            <li>{% post_to_whatsapp article.get_absloute_url "WhatsApp" %}</li>
+                                                            <li>{% post_to_whatsapp article.get_absolute_url "WhatsApp" %}</li>
                                                             ,
-                                                            <li>{% post_to_twitter article.get_absloute_url "Twitter" %}</li>
+                                                            <li>{% post_to_twitter article.get_absolute_url article.title "Twitter" %}</li>
                                                         </ul>
                                                     </div>
                                                 </div>

@@ -89,7 +89,7 @@
                             <tr class="expandable-body d-none">
                                 <td colspan="10">
                                     <p style="display: none;">
-                                        {{ article.description | truncatewords:50 | linebreaks }}
+                                        {{ article.description|safe|linebreaks|truncatewords:50 }}
                                     </p>
                                 </td>
                             </tr>

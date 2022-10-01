@@ -32,9 +32,11 @@
                         <div class="col-6">
                             {{ form.last_login|as_crispy_field }}
                         </div>
+                    {% if user.is_author or user.is_superuser or user.is_staff %}
                         <div class="col-3">
                             {{ form.is_author|as_crispy_field }}
                         </div>
+                    {% endif %}
                         {% if user.is_superuser %}
                             <div class="col-3">
                                 {{ form.is_active|as_crispy_field }}

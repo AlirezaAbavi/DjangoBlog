@@ -34,9 +34,12 @@
                                             <img src="{{ article.thumbnail.url }}" alt="">
                                         </div>
                                         <div class="down-content">
-                                            <a href="{% url 'blog:detail' article.slug %}"><span>{{ article.title }}</span></a>
-                                            <a href="{% url 'blog:detail' article.slug %}">
-                                                <h4>{{ article.subtitle }}</h4></a>
+                                            {% if article.is_special %}
+                                                <h6 class="badge badge-warning" title="This is a paid article"><i
+                                                        class="fa fa-star"></i>Special</h6>
+                                            {% endif %}
+                                            <a href="{% url 'blog:detail' article.slug %}"><h4>{{ article.title }}</h4>
+                                            </a>
                                             <ul class="post-info">
                                                 <li>
                                                     <a href="{% url 'blog:author' article.author.username %}">{{ article.author.get_full_name }}</a>
@@ -71,6 +74,7 @@
                                             <li><a href="?
 
 
+
                                                     {% block search-phrase1 %}{% endblock %}&page={{ page_obj.previous_page_number }}"><i
                                                     class="fa fa-angle-double-left"></i></a></li>
                                         {% endif %}
@@ -81,12 +85,14 @@
                                                 <li><a href="?
 
 
+
                                                         {% block search-phrase2 %}{% endblock %}&page={{ i }}">{{ i }}</a>
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
                                         {% if page_obj.has_next %}
                                             <li><a href="?
+
 
 
                                                     {% block search-phrase3 %}{% endblock %}&page={{ page_obj.next_page_number }}"><i

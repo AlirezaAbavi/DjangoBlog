@@ -34,6 +34,7 @@ class ArticleList(AuthorizedAccessMixin, ListView):
 class ArticleCreate(LoginRequiredMixin, FieldsMixin, FormValidMixin, CreateView):
     model = Article
     template_name = "registration/article-create-update.html"
+    success_url = reverse_lazy('account:home')
 
 
 class CommentList(AuthorizedAccessMixin, ListView):
@@ -73,6 +74,7 @@ class CommentUpdate(CommentUpdateMixin, UpdateView):
 class ArticleUpdate(AuthorAccessMixin, FieldsMixin, FormValidMixin, UpdateView):
     model = Article
     template_name = "registration/article-create-update.html"
+    success_url = reverse_lazy('account:home')
 
 
 class ArticleDelete(DeletionMixin, DeleteView):
@@ -104,6 +106,11 @@ class Login(LoginView):
 
         if not self.request.POST.get('remember-me'):
             self.request.session.set_expiry(0)
+
+        previous_page = str(self.request.GET.get('previous_url'))
+
+        if previous_page != 'None':
+            return previous_page
 
         if user.is_superuser or user.is_staff or user.is_author:
             return reverse_lazy("account:home")

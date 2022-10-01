@@ -13,6 +13,9 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-content">
+                            {% if object.is_special %}
+                                <span class="badge badge-warning"><h5><i class="fa fa-star"></i>Special</h5></span>
+                            {% endif %}
                             {% if request.resolver_match.url_name == 'preview' %}
                                 <span class="badge badge-warning"><h5>Preview</h5></span>
                             {% endif %}
@@ -37,16 +40,45 @@
                                         <img src="{{ article.thumbnail.url }}" alt="">
                                     </div>
                                     <div class="down-content">
-                                        <span>{{ article.title }}</span>
-                                        <a href="post-details.html"><h4>{{ article.subtitle }}</h4></a>
+                                        {% if object.is_special %}
+                                            <h5 class="badge badge-warning" title="This is a paid article"><i
+                                                    class="fa fa-star"></i>Special</h5>
+                                        {% endif %}
+                                        <h4>{{ article.title }}</h4>
+                                        <h5>{{ article.subtitle }}</h5>
                                         <ul class="post-info">
                                             <li>
                                                 <a href="{% url 'blog:author' article.author.username %}">{{ article.author.get_full_name }}</a>
                                             </li>
                                             <li><a href="#">{{ article.publish|date }}</a></li>
-                                            <li><a href="#">{{ article.comments.count }} Comments</a></li>
+                                            <li><a href="#">{{ article.comments.published.count }} Comments</a></li>
                                         </ul>
-                                        <p>{{ article.description|safe|linebreaks }}</p>
+                                        {% if article.is_special %}
+                                            {% if user.is_authenticated %}
+                                                {% if user.is_special or article.author == user or user.is_superuser or user.is_staff %}
+                                                    <p>{{ article.description|safe|linebreaks }}</p>
+                                                {% else %}
+                                                    <p>{{ article.description|safe|linebreaks|truncatewords:50 }} <a
+                                                            href="#">
+                                                        <button class="btn btn-warning">
+                                                            Please
+                                                            buy special membership to see more
+                                                        </button>
+                                                    </a></p>
+
+                                                {% endif %}
+                                            {% else %}
+                                                <p>{{ article.description|safe|linebreaks|truncatewords:50 }} <a
+                                                        href="{% url 'login' %}?previous_url={{ request.path }}">
+                                                    <button class="btn btn-warning">Please login to see more
+                                                    </button>
+                                                </a></p>
+
+                                            {% endif %}
+                                        {% else %}
+                                            <p>{{ article.description|safe|linebreaks }}</p>
+                                        {% endif %}
+
                                         <div class="post-options">
                                             <div class="row">
                                                 <div class="col-6">
@@ -60,11 +92,11 @@
                                                 <div class="col-6">
                                                     <ul class="post-share">
                                                         <li><i class="fa fa-share-alt"></i></li>
-                                                        <li>{% post_to_telegram article.get_absloute_url "Telegram" %}</li>
+                                                        <li>{% post_to_telegram article.get_absolute_url article.title "Telegram" %}</li>
                                                         ,
-                                                        <li>{% post_to_whatsapp article.get_absloute_url "WhatsApp" %}</li>
+                                                        <li>{% post_to_whatsapp article.get_absolute_url "WhatsApp" %}</li>
                                                         ,
-                                                        <li>{% post_to_twitter article.get_absloute_url "Twitter" %}</li>
+                                                        <li>{% post_to_twitter article.get_absolute_url article.title "Twitter" %}</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -75,11 +107,11 @@
                             <div class="col-lg-12" id="comments">
                                 <div class="sidebar-item comments">
                                     <div class="sidebar-heading">
-                                        <h2>{{ article.comments.count }} comments</h2>
+                                        <h2>{{ article.comments.published.count }} comments</h2>
                                     </div>
                                     <div class="content">
                                         <ul>
-                                            {% for comment in article.comments.all %}
+                                            {% for comment in article.comments.published %}
                                                 {% if comment.parent == None %}
                                                     <li>
                                                         <div class="author-thumb">
@@ -103,7 +135,7 @@
                                                     </li>
                                                 {% endif %}
 
-                                                {% for reply in comment.replies.all %}
+                                                {% for reply in comment.replies.published %}
                                                     <li class="replied">
                                                         <div class="author-thumb">
                                                             {% if request.user.profile.image %}
@@ -157,7 +189,10 @@
 
                                     {% else %}
                                         <div class="content">
-                                            <button class="btn btn-warning">Please login to write your comment</button>
+                                            <a href="{% url 'login' %}?previous_url={{ request.path }}">
+                                                <button class="btn btn-warning">Please login to write your comment
+                                                </button>
+                                            </a>
                                         </div>
                                     {% endif %}
 

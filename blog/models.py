@@ -76,7 +76,7 @@ class Article(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("account:home")
+        return reverse('blog:detail', kwargs={'slug': self.slug})
 
     def thumbnail_tag(self):
         return format_html("<img width=100 height=75 style='border-radius: 5px;' src='{}'>".format(self.thumbnail.url))
