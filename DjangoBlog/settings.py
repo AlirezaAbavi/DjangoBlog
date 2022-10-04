@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_social_share',
     'crispy_forms',
     'widget_tweaks',
+    'social_django',
     'blog.apps.BlogConfig',
     'account.apps.AccountConfig',
 ]
@@ -141,3 +142,20 @@ MEDIA_URL = 'media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+# Google auth credentials uncomment in case of use
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'key'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'secret'
+
+# getting google auth credentials from local file
+try:
+    from .local_settings import *
+except ImportError:
+    pass
